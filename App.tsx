@@ -10,18 +10,18 @@ export default function App() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [story, setStory] = useState<StoryResponse | null>(null);
   const [displayImage, setDisplayImage] = useState<string | null>(null);
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleGenerate = async () => {
     if (!input.trim() && !selectedImage) return;
-    
+
     setIsLoading(true);
     setError(null);
     setStory(null);
     setDisplayImage(null);
-    
+
     try {
       // 1. Generate Story Text (passing image if user uploaded one to influence story)
       const result = await generateStory(input, style, selectedImage || undefined);
@@ -57,18 +57,18 @@ export default function App() {
       <div className="h-2 bg-gradient-to-r from-brand-yellow via-brand-pink to-brand-blue" />
 
       <main className="flex-1 container mx-auto px-4 py-8">
-        
+
         {!story ? (
           <div className="flex flex-col items-center justify-center min-h-[80vh]">
-             <div className="mb-8 text-center">
-                <div className="inline-block bg-white p-4 rounded-full shadow-lg mb-4 border-4 border-brand-green">
-                    <span className="text-4xl">🐻</span>
-                </div>
-                <h1 className="text-4xl font-bold text-brand-blue mb-2 tracking-tight">TinyTales</h1>
-                <p className="text-brand-orange font-medium">Turn your day into a magic story!</p>
-             </div>
+            <div className="mb-8 text-center">
+              <div className="inline-block bg-white p-4 rounded-full shadow-lg mb-4 border-4 border-brand-green">
+                <span className="text-4xl">🐻</span>
+              </div>
+              <h1 className="text-4xl font-bold text-brand-blue mb-2 tracking-tight">TinyTales</h1>
+              <p className="text-brand-orange font-medium">Turn your day into a magic story!</p>
+            </div>
 
-            <InputSection 
+            <InputSection
               input={input}
               setInput={setInput}
               selectedStyle={style}
@@ -80,25 +80,25 @@ export default function App() {
             />
 
             {error && (
-               <div className="mt-6 p-4 bg-red-100 border-2 border-red-200 text-red-600 rounded-xl text-center max-w-md animate-bounce">
-                  {error}
-               </div>
+              <div className="mt-6 p-4 bg-red-100 border-2 border-red-200 text-red-600 rounded-xl text-center max-w-md animate-bounce">
+                {error}
+              </div>
             )}
           </div>
         ) : (
-          <StoryDisplay 
-            story={story} 
+          <StoryDisplay
+            story={story}
             onReset={handleReset}
             imageUrl={displayImage}
           />
         )}
       </main>
-      
+
       {/* Footer */}
       {!story && (
-         <footer className="text-center py-6 text-gray-400 text-sm">
-            <p>© 2024 TinyTales • Powered by Gemini 2.5</p>
-         </footer>
+        <footer className="text-center py-6 text-gray-400 text-sm">
+          <p>© 2024 TinyTales • Powered by Gemini 2.5</p>
+        </footer>
       )}
     </div>
   );

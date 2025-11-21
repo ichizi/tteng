@@ -1,7 +1,7 @@
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { StoryResponse, StoryStyle } from "../types";
 
-const apiKey = process.env.API_KEY || '';
+const apiKey = import.meta.env.VITE_API_KEY || '';
 const ai = new GoogleGenAI({ apiKey });
 
 const storySchema: Schema = {
@@ -73,13 +73,13 @@ export const generateStory = async (text: string, style: StoryStyle, imageBase64
 
   try {
     const contentParts: any[] = [];
-    
+
     if (imageBase64) {
       // Extract base64 data if it contains the prefix
-      const base64Data = imageBase64.includes('base64,') 
-        ? imageBase64.split('base64,')[1] 
+      const base64Data = imageBase64.includes('base64,')
+        ? imageBase64.split('base64,')[1]
         : imageBase64;
-        
+
       contentParts.push({
         inlineData: {
           mimeType: 'image/jpeg', // Defaulting to jpeg for simplicity, works for png too usually
@@ -153,7 +153,7 @@ export const generateSpeech = async (text: string): Promise<string | null> => {
       model: "gemini-2.5-flash-preview-tts",
       contents: { parts: [{ text }] },
       config: {
-        responseModalities: ["AUDIO"] as any, 
+        responseModalities: ["AUDIO"] as any,
         speechConfig: {
           voiceConfig: {
             prebuiltVoiceConfig: { voiceName: 'Kore' }, // Kore is a gentle female voice
@@ -163,9 +163,12 @@ export const generateSpeech = async (text: string): Promise<string | null> => {
     });
 
     const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-    return base64Audio || null;
+    if (!base64Audio) {
+      throw new Error("No audio content returned from Gemini");
+    }
+    return base64Audio;
   } catch (error) {
     console.error("TTS Generation Error:", error);
-    return null;
+    throw error;
   }
 };
