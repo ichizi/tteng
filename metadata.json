@@ -1,0 +1,7 @@
+{
+  "name": "TinyTales - English Enlightenment",
+  "description": "A dedicated AI-powered English story generator for children aged 3-6. Transforms daily events into bilingual learning stories with interactive features.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
